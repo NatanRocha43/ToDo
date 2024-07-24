@@ -1,23 +1,40 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
 
 function App() {
+  const [tarefas, setTarefas] = useState([]);
+  const [novaTarefa, setNovaTarefa] = useState('');
+
+  const adicionarTarefa = () => {
+    if (novaTarefa.trim()) {
+      setTarefas([...tarefas, novaTarefa]);
+      setNovaTarefa('');
+    }
+  };
+
+  const deletarTarefa = (index) => {
+    setTarefas(tarefas.filter((_, i) => i !== index));
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Lista de Tarefas</h1>
+      <div>
+        <input
+          type="text"
+          value={novaTarefa}
+          onChange={(e) => setNovaTarefa(e.target.value)}
+          placeholder="Adicionar uma nova tarefa"
+        />
+        <button onClick={adicionarTarefa}>Adicionar</button>
+      </div>
+      <ul>
+        {tarefas.map((tarefa, index) => (
+          <li key={index}>
+            {tarefa} <button onClick={() => deletarTarefa(index)}>Deletar</button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
